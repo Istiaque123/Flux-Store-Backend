@@ -4,6 +4,7 @@ import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { env } from "../config";
 import { HTTP_STATUS } from "../common";
+import { logger } from "../utils";
 
 
 export const authMiddleware = (
@@ -32,13 +33,27 @@ export const authMiddleware = (
       });
     }
 
+    
+
     req.user = decode as any;
     next();
 
-  } catch (e) {
+  } catch (e: any) {
+
+    let message = 'Invalid token';
+    let status = HTTP_STATUS.UNAUTHORIZED;
+
+    if (e.name === 'TokenExpiredError') {
+      message = 'Token has expired';
+    } else if (e.name === 'JsonWebTokenError') {
+      message = 'Invalid token signature';
+    }
+
+    logger.warn(`JWT verification failed: ${e.message} - ${req.ip}`);
+
     return res.status(HTTP_STATUS.UNAUTHORIZED).json({
         success: false,
-        message: "Invalid token" ,
+        message: message,
         status: HTTP_STATUS.UNAUTHORIZED,
       });
   }

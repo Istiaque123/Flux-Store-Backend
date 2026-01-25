@@ -10,7 +10,12 @@ const base = `${API_PREFIX}/auth`;
 
 authRouter.post(
     `${base}/register`,
-    authController.retisgerUser.bind(authController)
+    authController.registerUser.bind(authController)
+);
+
+authRouter.post(
+    `${base}/login`,
+    authController.loginUser.bind(authController),
 );
 
 
