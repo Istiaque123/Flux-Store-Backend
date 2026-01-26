@@ -1,4 +1,4 @@
-// ! src/modules/auth/dto/update_password.dto.ts
+// ! src/modules/auth/dto/req_dtos/update_password.dto.ts
 export interface UpdatePasswordDto {
 
     user_id: string;

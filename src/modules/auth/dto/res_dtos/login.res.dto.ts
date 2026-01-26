@@ -1,4 +1,4 @@
-// ! src/modules/auth/dto/login.res.dto.ts
+// ! src/modules/auth/res_dtos/dto/login.res.dto.ts
 
 
 

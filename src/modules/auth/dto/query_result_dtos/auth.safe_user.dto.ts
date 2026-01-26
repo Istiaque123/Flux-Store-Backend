@@ -1,4 +1,4 @@
-// ! src/modules/auth/dto/auth.safe_user.dto.ts
+// ! src/modules/auth/dto/query_result_dtos/auth.safe_user.dto.ts
 
 import type {QueryResultRow} from "pg";
 

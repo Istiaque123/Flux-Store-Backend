@@ -1,4 +1,4 @@
-// ! src/modules/auth/dto/login.dto.ts
+// ! src/modules/auth/dto/req_dtos/login.dto.ts
 
 export interface LoginDto{
     email: string;

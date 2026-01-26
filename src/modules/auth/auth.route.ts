@@ -1,22 +1,42 @@
 // ! src/modules/auth/auth.route.ts
 
 import { Router } from "express";
-import { API_PREFIX } from "../../common";
+import { API_PREFIX, UserRoles } from "../../common";
 import { authController } from "./auth.controller";
+import { getAuthorizationMiddleware } from "../../core/app";
 
-const authRouter: Router = Router();
+
+const authPublicRouter: Router = Router();
+const authPrivateRouter: Router = Router();
 
 const base = `${API_PREFIX}/auth`;
 
-authRouter.post(
+// !-------------------------------------------------
+// ! Public routes
+authPublicRouter.post(
     `${base}/register`,
     authController.registerUser.bind(authController)
 );
 
-authRouter.post(
+authPublicRouter.post(
     `${base}/login`,
     authController.loginUser.bind(authController),
 );
 
 
-export default authRouter;
+
+
+// !-------------------------------------------------
+// ! Private routes
+authPrivateRouter.post(
+    `${base}/update-password`,
+    getAuthorizationMiddleware(UserRoles.user),
+    authController.updatePassword.bind(authController)
+);
+
+
+
+export default {
+    authPublicRouter: authPublicRouter,
+    authPrivateRouter: authPrivateRouter
+};

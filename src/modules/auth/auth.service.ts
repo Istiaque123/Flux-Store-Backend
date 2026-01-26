@@ -7,11 +7,12 @@ import type {
    SafeUserRaw,
    RegisterResposeDto, 
    LoginResponseDto , 
-   UpdatePasswordDto
+   UpdatePasswordDto,
+   UpdatePasswordResponseDto
   } from "./dto";
 import { ApiError, logger } from "../../utils";
 import { HTTP_STATUS } from "../../common";
-import { compairePassword, hashPassword } from "../../utils/password.util";
+import { compairePassword, hashPassword } from '../../utils/password.util';
 import jwt from 'jsonwebtoken';
 import { env } from "../../config";
 
@@ -85,14 +86,16 @@ export class AuthService {
       throw new ApiError(HTTP_STATUS.NOT_FOUND, 'user not found or already delete');
     }
 
-    try {
+    
       // ? verify password
 
       const passwordMatch: boolean = await compairePassword(data.password, existingUser.password );
+
       if (!passwordMatch) {
         throw new ApiError(HTTP_STATUS.UNAUTHORIZED, 'Invalid credentials');
       }
 
+      try {
       // ! generate token
       const payload = {
         id: existingUser.id,
@@ -100,9 +103,11 @@ export class AuthService {
         role: existingUser.role,
       };
 
-      const timestamp: Date = new Date();
+      // ! expaire time
+      const timestamp: Date = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
       const accessToken: string = jwt.sign(payload, env.ACCESS_TOKEN_SECRET, {
-        expiresIn: "1d"
+        expiresIn: "2d"
       });
 
 
@@ -136,11 +141,7 @@ export class AuthService {
   }
 
   // * upadate password
-  async updatePassword(data: UpdatePasswordDto):Promise<{
-    user_id: string;
-    email: string;
-    role: string;
-} | undefined>{
+  async updatePassword(data: UpdatePasswordDto):Promise<UpdatePasswordResponseDto>{
 
     const existingUser: FullUserRaw | null = await this.query.findById(data.user_id);
 
@@ -148,9 +149,10 @@ export class AuthService {
       throw new ApiError(HTTP_STATUS.NOT_FOUND, 'user not found or already delete');
     }
 
-    try {
+    
       // ! check old password
-      const decodePassword: boolean = await compairePassword(data.new_password,
+      const decodePassword: boolean = await compairePassword(
+        data.old_password,
         existingUser.password
       );
 
@@ -158,6 +160,7 @@ export class AuthService {
         throw new ApiError(HTTP_STATUS.BAD_REQUEST, "Old password does not match");
       }
 
+      try {
       // ! generate new password
       const hashed: string = await hashPassword(data.new_password);
 
@@ -169,6 +172,7 @@ export class AuthService {
         user_id: existingUser.id,
         email: existingUser.email,
         role: existingUser.role,
+        is_password_change: true,
         };
       }
       else{

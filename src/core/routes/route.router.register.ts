@@ -4,25 +4,14 @@ import authRouter from "../../modules/auth/auth.route";
 import type { createRouterManager } from "./route.router.initialize";
 
 
-export function registerAllRoutes(routerManager: ReturnType<typeof createRouterManager>){
+export function registerAllRoutes(routerManager: ReturnType<typeof createRouterManager>) {
+  // !Public routes 
+  // !Public routes 
+  routerManager.regesterPublicRoutes('', authRouter.authPublicRouter);
 
-    // ! public routes
-    // ! public routes
-    routerManager.regesterPublicRoutes('', authRouter);
+  // ! Protected routes 
+  // ! Protected routes 
+  routerManager.regesterProtectedRouters('', authRouter.authPrivateRouter);
 
-
-
-
-
-    // ! ---------------------------------------------------------------------------------
-
-
-    // ! protected routes
-    // ! protected routes
-
-
-
-
-
-    return routerManager;
+  return routerManager;
 }

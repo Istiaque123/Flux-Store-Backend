@@ -1,4 +1,4 @@
-// ! src/modules/auth/dto/register.dto.ts
+// ! src/modules/auth/dto/req_dtos/register.dto.ts
 
 export interface RegisterDto {
   email: string;

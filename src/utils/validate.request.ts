@@ -13,7 +13,7 @@ export function validate<T = unknown>(
   sources: Source[] = ['body'],           // default to body only
   options: Joi.ValidationOptions = {
     abortEarly: false,
-    stripUnknown: true,
+    stripUnknown: false,
     errors: { label: 'key' },
   }
 ): T {

@@ -1,17 +1,18 @@
 // ! src/core/bootstrap.ts
 import type { Application } from "express";
-import { 
-    applyCoreMiddleWare, 
-    createApp, 
-    initializeDatabase, 
-    initializeTablesMigration
- } from "./app";
+import {
+  applyCoreMiddleWare,
+  createApp,
+  initializeDatabase,
+  initializeTablesMigration
+} from "./app";
 import { env } from "../config";
 import { logger } from "../utils";
 import type { Request, Response } from "express";
 import { getTableDefinitions } from "./tables";
 import { createRouterManager, registerAllRoutes } from "./routes";
 import { errorMiddleware } from "../middlewares";
+import { HTTP_STATUS } from "../common";
 
 export const bootstrap = async (): Promise<void> => {
   try {
@@ -27,6 +28,8 @@ export const bootstrap = async (): Promise<void> => {
     // ? Create and configure app
     let app: Application = createApp();
 
+    
+
     // ! add response middleware
     app = applyCoreMiddleWare(app);
 
@@ -39,12 +42,25 @@ export const bootstrap = async (): Promise<void> => {
 
 
 
-    app.use("/", (req: Request, res: Response) => [
-      res.send("FluxStor server running"),
-    ]);
+
+
+    // ! Catch-all for unmatched routes (404)
+    app.use((req: Request, res: Response) => {
+      res.status(HTTP_STATUS.NOT_FOUND).json({     // ← use 404, not 502
+        success: false,
+        message: `Route not found: ${req.method} ${req.originalUrl}`,
+        status: HTTP_STATUS.NOT_FOUND,
+        data: null,
+      });
+    });
 
     // ? Error middleware (must be last)
     app.use(errorMiddleware);
+
+
+
+
+
 
     // ? Start server
     app.listen(env.PORT, () => {

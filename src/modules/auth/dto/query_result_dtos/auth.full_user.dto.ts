@@ -1,4 +1,4 @@
-// ! src/modules/auth/dto/auth.full_user.dto.ts
+// ! src/modules/auth/dto/query_result_dtos/auth.full_user.dto.ts
 
 import type { SafeUserRaw } from './auth.safe_user.dto';
 

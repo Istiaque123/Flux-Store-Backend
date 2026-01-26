@@ -1,4 +1,4 @@
-// ! src/modules/auth/dto/auth.authrozation.dto.ts
+// ! src/modules/auth/dto/query_result_dtos/auth.authrozation.dto.ts
 import type {QueryResultRow} from 'pg';
 
 export interface AuthroizationRaw extends QueryResultRow {

@@ -38,6 +38,10 @@ export function createApp(): Application {
   // CORS
   app.use(cors({ origin: "*" }));
 
+  app.get("/", (req: Express.Request, res: Express.Response) => [
+      res.send("FluxStor server running"),
+    ]);
+
   // Static files
 
   const __filename: string = fileURLToPath(import.meta.url);
@@ -46,6 +50,8 @@ export function createApp(): Application {
 
   const publicDir: string = env.PUBLIC_DIR ;
   app.use(Express.static(path.join(__dirname, "..", "..", "..", publicDir)));
+
+  
 
   return app;
 }

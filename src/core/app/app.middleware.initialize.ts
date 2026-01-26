@@ -3,6 +3,7 @@
 import express, { type Application } from "express";
 import { authMiddleware, AuthorizationMiddleware, responseMiddleware } from "../../middlewares";
 import { UserRoles } from "../../common";
+import { logger } from "../../utils";
 
 
 
@@ -19,6 +20,7 @@ export function getAuthorizationMiddleware(role: UserRoles)
 : (req: express.Request, res: express.Response, next: express.NextFunction)
  => Promise<express.Response<any, Record<string, any>> 
  | undefined> {
+  logger.info("woriking on role base authz");
   return AuthorizationMiddleware.authorizationMiddleware(role);
 }
 
