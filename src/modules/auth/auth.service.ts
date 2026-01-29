@@ -8,7 +8,8 @@ import type {
    RegisterResposeDto, 
    LoginResponseDto , 
    UpdatePasswordDto,
-   UpdatePasswordResponseDto
+   UpdatePasswordResponseDto,
+   ForgetPasswordDto
   } from "./dto";
 import { ApiError, logger } from "../../utils";
 import { HTTP_STATUS } from "../../common";
@@ -189,6 +190,38 @@ export class AuthService {
       );
 
     }
+  }
+
+
+  // * forget password
+  async forgetPassword(data: ForgetPasswordDto){
+    
+    // ! check password
+
+    if (data.new_password !== data.confirm_password) {
+      throw new ApiError(HTTP_STATUS.NOT_ACCEPTABLE, 'password did not mathch');
+    }
+    
+    // ! check otp
+
+
+   try {
+    // ! validate otp
+
+
+
+    // ! update password
+
+    const hased: string = await hashPassword(data.confirm_password);
+    const result = await this.query.restorePassword(data.email, hased);
+
+    console.log(result);
+    
+
+
+   } catch (error) {
+    
+   }
   }
 }
 

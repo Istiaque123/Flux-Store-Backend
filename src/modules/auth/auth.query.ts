@@ -6,6 +6,7 @@ import { UserTables } from "../users/models";
 import type { AuthroizationRaw, FullUserRaw, SafeUserRaw } from "./dto";
 import { AUTH_TABLES } from "./models";
 
+
 // ! Auth Query
 export class AuthQuery {
   private userTable: string = UserTables.USERS;
@@ -91,6 +92,25 @@ export class AuthQuery {
     );
 
     return !!updated;
+  }
+
+  // * forget password and update by email
+
+  async restorePassword(
+    email: string,
+    password: string,
+  ): Promise<FullUserRaw[]>{
+   return DBQuery.update<FullUserRaw>(
+      this.userTable, {
+        password: password,
+        updated_at: new Date(),
+      },{
+        email: email,
+        is_delete: false
+      },
+    );
+
+    
   }
 
 

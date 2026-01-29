@@ -1,6 +1,6 @@
 // ! src/config/database.query.ts
 
-import type { PoolClient, QueryResultRow } from "pg";
+import type { PoolClient, QueryResult, QueryResultRow } from "pg";
 import { pool } from "./";
 
 // ! Helper to safely quote identifiers (table/column names)
@@ -117,20 +117,22 @@ export class DBQuery {
       throw new Error("No fields to update");
     }
 
-    const sanitized = Object.fromEntries(
+    const sanitized: {
+      [k: string]: any;
+    } = Object.fromEntries(
       Object.entries(data).map(([k, v]) => [
         k,
         v === "" || v === undefined ? null : v,
       ])
     );
 
-    const dataKeys = Object.keys(sanitized);
-    const dataValues = Object.values(sanitized);
+    const dataKeys:  string[] = Object.keys(sanitized);
+    const dataValues: any[] = Object.values(sanitized);
 
-    const condEntries = Object.entries(condition);
-    const condValues = condEntries.map(([, v]) => v);
+    const condEntries: [string, any][] = Object.entries(condition);
+    const condValues: any[] = condEntries.map(([, v]) => v);
 
-    const setParts = dataKeys.map(
+    const setParts: string[] = dataKeys.map(
       (key, i) => `${quoteIdentifier(key)} = $${i + 1}`
     );
 
@@ -146,7 +148,7 @@ export class DBQuery {
       RETURNING *;
     `;
 
-    const result = await queryExecutor.query<T>(query, [
+    const result: QueryResult<T> = await queryExecutor.query<T>(query, [
       ...dataValues,
       ...condValues,
     ]);

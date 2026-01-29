@@ -10,6 +10,7 @@ export * from "./query_result_dtos/auth.authrozation.dto";
 export * from "./req_dtos/register.dto";
 export * from "./req_dtos/login.dto";
 export * from "./req_dtos/update_password.dto";
+export * from "./req_dtos/forget_password.dto";
 
 
 

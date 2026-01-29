@@ -33,7 +33,7 @@ export class AuthController {
 
     // * update password
     async updatePassword(req:Request, res: Response):Promise<void>{
-
+ 
         
         const data: UpdatePasswordDto = validate(updatePasswordSchema, req, [REQUEST_SORUCE.body]);
 
@@ -41,6 +41,8 @@ export class AuthController {
 
         res.success(result, HTTP_STATUS.ACCEPTED, 'user password update successful');
     }
+
+    
 
 }
 

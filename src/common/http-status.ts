@@ -17,9 +17,10 @@ export const HTTP_STATUS = {
   FORBIDDEN: 403,             // Authenticated but no permission (wrong role)
   NOT_FOUND: 404,             // Resource does not exist
   METHOD_NOT_ALLOWED: 405,    // Wrong HTTP method on endpoint
+  NOT_ACCEPTABLE: 406,   // Rate limiting hit
   CONFLICT: 409,              // Conflict (e.g. email already registered, version conflict)
   UNPROCESSABLE_ENTITY: 422,  // Semantic validation error (used by some APIs instead of 400)
-  TOO_MANY_REQUESTS: 429,     // Rate limiting hit
+  TOO_MANY_REQUESTS: 429,  
 
   // !───────────────────────────────────────────────
   // ! Server Errors (5xx)
