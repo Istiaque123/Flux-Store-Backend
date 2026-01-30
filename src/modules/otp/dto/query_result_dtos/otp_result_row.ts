@@ -12,4 +12,5 @@ export interface OtpRow extends QueryResultRow {
     is_used: boolean;
     used_at?: Date | null;
     created_at: Date;
+    expires_at: Date;
 }

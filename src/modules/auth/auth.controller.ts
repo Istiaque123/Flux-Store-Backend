@@ -2,10 +2,10 @@
 
 import type {Request, Response} from 'express';
 import { validate } from '../../utils';
-import { loginSchema, registerSchema, updatePasswordSchema } from './auth.validation';
+import { forgerPasswordSchema, loginSchema, registerSchema, updatePasswordSchema } from './auth.validation';
 import { HTTP_STATUS, REQUEST_SORUCE } from '../../common';
 import { AuthService, authService } from './auth.service';
-import type { LoginDto, LoginResponseDto, RegisterDto, RegisterResposeDto, UpdatePasswordDto, UpdatePasswordResponseDto } from './dto';
+import type { ForgetPasswordDto, FullUserRaw, LoginDto, LoginResponseDto, RegisterDto, RegisterResposeDto, UpdatePasswordDto, UpdatePasswordResponseDto } from './dto';
 
 
 export class AuthController {
@@ -42,6 +42,17 @@ export class AuthController {
         res.success(result, HTTP_STATUS.ACCEPTED, 'user password update successful');
     }
 
+
+    // * forget password
+    async forgerPassword(req: Request, res: Response):Promise<void>{
+        const data: ForgetPasswordDto = validate(forgerPasswordSchema, req, [
+            REQUEST_SORUCE.body,
+        ]);
+
+        const result: UpdatePasswordResponseDto = await this.service.forgetPassword(data);
+
+        res.success(result, HTTP_STATUS.OK, "Pssword reset successful");
+    }
     
 
 }

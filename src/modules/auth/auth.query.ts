@@ -99,8 +99,8 @@ export class AuthQuery {
   async restorePassword(
     email: string,
     password: string,
-  ): Promise<FullUserRaw[]>{
-   return DBQuery.update<FullUserRaw>(
+  ): Promise<FullUserRaw | null>{
+    const result: FullUserRaw[] = await DBQuery.update<FullUserRaw>(
       this.userTable, {
         password: password,
         updated_at: new Date(),
@@ -108,7 +108,8 @@ export class AuthQuery {
         email: email,
         is_delete: false
       },
-    );
+    )
+   return result[0] || null;
 
     
   }

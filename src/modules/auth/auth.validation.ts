@@ -17,9 +17,17 @@ export const refreshTokenSchema: Joi.ObjectSchema<any> = Joi.object({
   refreshToken: Joi.string().required(),
 });
 
-export const updatePasswordSchema: Joi.ObjectSchema<UpdatePasswordDto> = Joi.object({
-  user_id: Joi.string().uuid().required(),
-  old_password: Joi.string().trim().min(4).max(128).required(),
-  new_password: Joi.string().trim().min(4).max(128).required(),
+export const updatePasswordSchema: Joi.ObjectSchema<UpdatePasswordDto> =
+  Joi.object({
+    user_id: Joi.string().uuid().required(),
+    old_password: Joi.string().trim().min(4).max(128).required(),
+    new_password: Joi.string().trim().min(4).max(128).required(),
+  });
 
-});
+export const forgerPasswordSchema: Joi.ObjectSchema<UpdatePasswordDto> =
+  Joi.object({
+    email: Joi.string().email().lowercase().trim().required(),
+    otp: Joi.string().trim().required(),
+    new_password: Joi.string().trim().min(4).max(128).required(),
+    confirm_password: Joi.string().trim().min(4).max(128).required(),
+  });

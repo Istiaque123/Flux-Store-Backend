@@ -10,6 +10,8 @@ export * from "./query_result_dtos/otp_result_row";
 
 
 // ! Requst DTO
+export * from "./req_dtos/otp_create.dto";
+export * from "./req_dtos/otp_find.dto";
 
 
 
@@ -19,3 +21,4 @@ export * from "./query_result_dtos/otp_result_row";
 
 
 // ! Response DTO
+export * from "./res_dtos/otp_send.dto";

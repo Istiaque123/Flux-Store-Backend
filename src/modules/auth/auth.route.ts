@@ -23,6 +23,10 @@ authPublicRouter.post(
     authController.loginUser.bind(authController),
 );
 
+authPublicRouter.post(
+    `${base}/forger-password`,
+    authController.forgerPassword.bind(authController),
+);
 
 
 
