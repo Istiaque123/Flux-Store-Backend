@@ -25,6 +25,7 @@ export * from "./req_dtos/user_profile_update.dto";
 
 
 // ! Response interface
+export * from "./res_dtos/user_profile_info.dto";
 
 
 
