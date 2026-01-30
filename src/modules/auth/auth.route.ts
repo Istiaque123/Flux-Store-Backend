@@ -3,7 +3,7 @@
 import { Router } from "express";
 import { API_PREFIX, UserRoles } from "../../common";
 import { authController } from "./auth.controller";
-import { getAuthorizationMiddleware } from "../../core/app";
+import { getAuthorizationMiddleware, getMultiAuthorizationMiddleware } from "../../core/app";
 
 
 const authPublicRouter: Router = Router();
@@ -34,8 +34,14 @@ authPublicRouter.post(
 // ! Private routes
 authPrivateRouter.post(
     `${base}/update-password`,
-    getAuthorizationMiddleware(UserRoles.user),
+    getAuthorizationMiddleware(UserRoles.admin),
+    // getMultiAuthorizationMiddleware(UserRoles.admin, UserRoles.user),
     authController.updatePassword.bind(authController)
+);
+
+authPrivateRouter.get(
+    `${base}/me`,
+    authController.getUserSession.bind(authController),
 );
 
 

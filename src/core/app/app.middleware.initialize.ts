@@ -16,12 +16,20 @@ export function applyCoreMiddleWare(app: Application): Application {
     return app;
 }
 
-export function getAuthorizationMiddleware(role: UserRoles)
-: (req: express.Request, res: express.Response, next: express.NextFunction)
- => Promise<express.Response<any, Record<string, any>> 
- | undefined> {
-  logger.info("woriking on role base authz");
+// ! Single role - returns the middleware function
+export function getAuthorizationMiddleware(
+  role: UserRoles
+): (req: express.Request, res: express.Response, next: express.NextFunction) => Promise<void> {
+  logger.info(`Working on single-role authorization: ${role}`);
   return AuthorizationMiddleware.authorizationMiddleware(role);
+}
+
+// Multiple roles - returns the middleware function
+export function getMultiAuthorizationMiddleware(
+  ...roles: UserRoles[]
+): (req: express.Request, res: express.Response, next: express.NextFunction) => Promise<void> {
+  logger.info(`Working on multi-role authorization: ${roles.join(', ')}`);
+  return AuthorizationMiddleware.requireAnyRole(...roles);
 }
 
 export function getAuthMiddleWare(): any{

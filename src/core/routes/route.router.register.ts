@@ -2,6 +2,7 @@
 import type { createRouterManager } from "./route.router.initialize";
 import authRouter from "../../modules/auth/auth.route";
 import otpRoute from "../../modules/otp/otp.route";
+import userProfileRouter from "../../modules/users/user.route";
 
 
 
@@ -15,6 +16,7 @@ export function registerAllRoutes(routerManager: ReturnType<typeof createRouterM
   // ! Protected routes 
   routerManager.regesterProtectedRouters('', authRouter.authPrivateRouter);
   routerManager.regesterProtectedRouters('', otpRoute.otpPrivateRouter);
+  routerManager.regesterProtectedRouters('', userProfileRouter);
 
   return routerManager;
 }

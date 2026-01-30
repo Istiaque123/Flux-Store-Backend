@@ -10,6 +10,7 @@ import type {
   UpdatePasswordDto,
   UpdatePasswordResponseDto,
   ForgetPasswordDto,
+  UserSessionResDto,
 } from "./dto";
 import { ApiError, logger } from "../../utils";
 import { HTTP_STATUS } from "../../common";
@@ -271,6 +272,26 @@ export class AuthService {
       );
     }
   }
+
+
+  // * user session
+  /**
+   * Get current authenticated user's session/profile info
+   * @param userId - From JWT (req.user.id)
+   */
+  async getUserSession(userId: string): Promise<UserSessionResDto> {
+    const session: UserSessionResDto | null = await this.query.userSession(userId);
+
+    if (!session) {
+      throw new ApiError(
+        HTTP_STATUS.NOT_FOUND,
+        "User or profile not found"
+      );
+    }
+
+    return session;
+  }
+
 }
 
 export const authService = new AuthService();

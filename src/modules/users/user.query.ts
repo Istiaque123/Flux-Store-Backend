@@ -22,6 +22,12 @@ export class UserProfileQuery {
   }
 
   // * update user profile
+  /**
+   * Update user profile - only allowed fields are processed
+   * @param user_id - The profile's user_id (FK)
+   * @param data - Partial update data from client
+   * @returns Updated row or null if nothing was updated or user not found
+   */
   async updateProfile(user_id: string, data: UserProfileUpdateDto): Promise<UserProfileResultRaw | undefined> {
     const updateFields: Record<string, any> = {}
     const allowFields: (keyof UserProfileUpdateDto)[] = [
@@ -34,6 +40,10 @@ export class UserProfileQuery {
       if (data[field] !== undefined) {
         updateFields[field] = data[field];
       }
+    }
+
+    if (Object.keys(updateFields).length === 0) {
+        return undefined;
     }
 
     updateFields.updated_at = new Date();

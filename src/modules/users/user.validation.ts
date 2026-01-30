@@ -19,14 +19,14 @@ export const updateUserProfileSchema: Joi.ObjectSchema<any> = Joi.object({
     address: Joi.string().trim().min(4).optional().allow(null, ''),
 }).min(1);
 
-export const findUserProfileByEmailSchema: Joi.ObjectPropertiesSchema<any> = Joi.object({
+export const findUserProfileByEmailSchema: Joi.ObjectSchema<any> = Joi.object({
     email: Joi.string().email().lowercase().trim().required(),
 });
 
-export const findUserProfileByPhoneSchema: Joi.ObjectPropertiesSchema<any> = Joi.object({
+export const findUserProfileByPhoneSchema: Joi.ObjectSchema<any> = Joi.object({
     phone: Joi.string().min(11).max(11).required(),
 });
 
-export const findUserProfileByUserIdSchema: Joi.ObjectPropertiesSchema<any> = Joi.object({
+export const findUserProfileByUserIdSchema: Joi.ObjectSchema<any> = Joi.object({
     user_id: Joi.string().uuid().trim().required(),
 });

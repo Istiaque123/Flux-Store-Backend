@@ -19,3 +19,4 @@ export * from "./req_dtos/forget_password.dto";
 export * from "./res_dtos/register.res.dto";
 export * from "./res_dtos/login.res.dto";
 export * from"./res_dtos/update_password.res.dto";
+export * from "./res_dtos/user.session.res.dto";

@@ -3,13 +3,14 @@
 import { UserRoles } from "../../common";
 import { DBQuery } from "../../config";
 import { UserTables } from "../users/models";
-import type { AuthroizationRaw, FullUserRaw, SafeUserRaw } from "./dto";
+import type { AuthroizationRaw, FullUserRaw, SafeUserRaw, UserSessionResDto } from "./dto";
 import { AUTH_TABLES } from "./models";
 
 
 // ! Auth Query
 export class AuthQuery {
   private userTable: string = UserTables.USERS;
+  private readonly userProfileTable: string = UserTables.USERS_PROFILE;
   private authorizeTable: string = AUTH_TABLES.auth;
 
   // * Authentication record for login
@@ -112,6 +113,33 @@ export class AuthQuery {
    return result[0] || null;
 
     
+  }
+
+  async userSession(user_id: string): Promise<UserSessionResDto | null>{
+    const query = `
+    SELECT
+      u.id AS user_id,
+      u.email,
+      u.role,
+      u.created_at AS user_created_at,
+      p.name,
+      p.phone,
+      p.address,
+      p.created_at AS profile_created_at,
+      p.updated_at AS profile_updated_at
+    FROM ${this.userTable} u
+    LEFT JOIN ${this.userProfileTable} p
+      ON p.user_id = u.id AND p.is_delete = FALSE
+    WHERE u.id = $1
+      AND u.is_delete = FALSE
+    LIMIT 1
+    `;
+
+    const rows: UserSessionResDto[] = await DBQuery.query<UserSessionResDto>(
+      query, [user_id]
+    );
+
+    return rows[0] || null;
   }
 
 
